@@ -1,122 +1,914 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>تسجيل الدخول</title>
-  <style>
-    :root{
-      --bg:#f5f7fb;
-      --card:#ffffff;
-      --accent:#1a73e8;
-      --muted:#6b7280;
-      --radius:12px;
-      --shadow: 0 8px 24px rgba(20,30,60,0.08);
-      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-    }
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#eef3fb);}
-    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
-    .card{width:100%;max-width:420px;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 26px}
-    .brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-    .logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#4aa3ff);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
-    h1{margin:0;font-size:20px;color:#0f1724}
-    p.lead{margin:6px 0 18px;color:var(--muted);font-size:14px}
-    label{display:block;font-size:13px;color:#374151;margin-bottom:6px}
-    .input{width:100%;padding:12px 14px;border:1px solid #e6e9ef;border-radius:8px;font-size:15px;outline:none;background:#fff;color:#0f1724}
-    .input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(26,115,232,0.08)}
-    .row{margin-bottom:14px}
-    .actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px}
-    .btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;border:0;font-weight:600;cursor:pointer;font-size:15px}
-    .link{color:var(--accent);text-decoration:none;font-size:13px}
-    .small{font-size:13px;color:var(--muted)}
-    .divider{height:1px;background:#f1f3f7;margin:18px -26px 18px}
-    @media (max-width:420px){.card{padding:20px}}
-    .msg{margin-top:12px;font-size:14px;color:#0b6b00;display:none}
-    .err{color:#b91c1c;display:none}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wave Light</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1f2937;
+    --border: #30363d;
+    --accent: #c8a45a;
+    --accent2: #e8c47a;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --success: #3fb950;
+    --danger: #f85149;
+    --radius: 12px;
+    --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* LOCK */
+  #lock-screen {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 100vh; width: 100%; padding: 24px;
+  }
+  .lock-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 48px 40px;
+    max-width: 420px; width: 100%;
+    box-shadow: var(--shadow); text-align: center;
+  }
+  .lock-logo {
+    width: 72px; height: 72px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 18px; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px; font-size: 32px;
+    box-shadow: 0 4px 20px rgba(200,164,90,0.3);
+  }
+  .lock-title { font-size: 28px; font-weight: 900; color: var(--accent); margin-bottom: 4px; letter-spacing: 1px; }
+  .lock-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+  .lock-input-wrap { position: relative; margin-bottom: 16px; }
+  .lock-input {
+    width: 100%; background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px;
+    font-family: 'Cairo', sans-serif; font-size: 18px; color: var(--text);
+    letter-spacing: 4px; text-align: center; transition: border-color 0.2s; outline: none;
+  }
+  .lock-input:focus { border-color: var(--accent); }
+  .lock-btn {
+    width: 100%; background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #0d1117; border: none; border-radius: var(--radius); padding: 14px;
+    font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+  }
+  .lock-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .lock-error { color: var(--danger); font-size: 13px; margin-top: 10px; min-height: 20px; }
+
+  /* APP */
+  #app { display: none; width: 100%; min-height: 100vh; flex-direction: column; }
+
+  .header {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-brand { display: flex; align-items: center; gap: 12px; }
+  .header-logo {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .header-name { font-size: 20px; font-weight: 900; color: var(--accent); }
+  .header-greeting { font-size: 14px; color: var(--muted); }
+  .header-greeting span { color: var(--accent2); font-weight: 700; }
+
+  .tab-nav {
+    display: flex; gap: 8px; padding: 20px 24px 0;
+    border-bottom: 1px solid var(--border); background: var(--surface);
+  }
+  .tab-btn {
+    background: none; border: none; border-bottom: 3px solid transparent;
+    padding: 10px 24px 12px; font-family: 'Cairo', sans-serif;
+    font-size: 15px; font-weight: 600; color: var(--muted);
+    cursor: pointer; transition: color 0.2s, border-color 0.2s; border-radius: 6px 6px 0 0;
+  }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-btn:hover:not(.active) { color: var(--text); }
+
+  .content { padding: 32px 24px; max-width: 720px; margin: 0 auto; width: 100%; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .form-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 18px; padding: 32px; box-shadow: var(--shadow);
+  }
+  .form-title {
+    font-size: 20px; font-weight: 700; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .form-title-icon {
+    width: 36px; height: 36px; background: rgba(200,164,90,0.12);
+    border: 1.5px solid var(--accent); border-radius: 9px;
+    display: flex; align-items: center; justify-content: center; font-size: 17px;
+  }
+  .form-desc { color: var(--muted); font-size: 13px; margin-bottom: 28px; padding-right: 46px; }
+
+  .form-grid { display: grid; gap: 16px; }
+  .form-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.span-2 { grid-column: 1 / -1; }
+
+  label { font-size: 13px; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .req { color: var(--danger); }
+
+  input, select {
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 12px 14px;
+    font-family: 'Cairo', sans-serif; font-size: 14px; color: var(--text);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%;
+  }
+  input:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(200,164,90,0.12);
+  }
+  select option { background: var(--surface2); }
+  input::placeholder { color: #4a5568; }
+
+  /* ─── AUTOCOMPLETE ─── */
+  .ac-wrap { position: relative; }
+  .ac-list {
+    position: absolute; top: calc(100% + 4px); right: 0; left: 0;
+    background: var(--surface2); border: 1px solid var(--accent);
+    border-radius: 10px; z-index: 200; max-height: 200px; overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5); display: none;
+  }
+  .ac-list.open { display: block; }
+  .ac-item {
+    padding: 10px 14px; cursor: pointer; font-size: 14px;
+    transition: background 0.15s; border-bottom: 1px solid var(--border);
+  }
+  .ac-item:last-child { border-bottom: none; }
+  .ac-item:hover, .ac-item.active { background: rgba(200,164,90,0.15); color: var(--accent2); }
+
+  /* ─── PRODUCTS LIST ─── */
+  .products-section { margin-bottom: 20px; }
+  .products-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .products-label { font-size: 14px; font-weight: 700; color: var(--accent); }
+  .add-product-btn {
+    background: rgba(200,164,90,0.1); border: 1.5px dashed var(--accent);
+    color: var(--accent); border-radius: 8px; padding: 6px 16px;
+    font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .add-product-btn:hover { background: rgba(200,164,90,0.2); }
+
+  .product-row {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; margin-bottom: 10px;
+    position: relative;
+  }
+  .product-row-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+  }
+  .product-row-num {
+    font-size: 12px; font-weight: 700; color: var(--accent);
+    background: rgba(200,164,90,0.1); border-radius: 6px; padding: 2px 10px;
+  }
+  .remove-row-btn {
+    background: rgba(248,81,73,0.1); border: 1px solid var(--danger);
+    color: var(--danger); border-radius: 6px; padding: 3px 10px;
+    font-family: 'Cairo', sans-serif; font-size: 12px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .remove-row-btn:hover { background: rgba(248,81,73,0.2); }
+
+  .row-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  /* Submit */
+  .submit-btn {
+    width: 100%; margin-top: 24px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #0d1117; border: none; border-radius: 12px; padding: 15px;
+    font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    box-shadow: 0 4px 16px rgba(200,164,90,0.25);
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(200,164,90,0.35); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  /* ─── PRODUCT FIELD WITH ADD BUTTON ─── */
+  .product-field-wrap { display: flex; gap: 8px; align-items: stretch; }
+  .product-field-wrap select { flex: 1; }
+  .add-new-product-btn {
+    background: rgba(200,164,90,0.1); border: 1.5px solid var(--accent);
+    color: var(--accent); border-radius: 10px; padding: 0 14px;
+    font-family: 'Cairo', sans-serif; font-size: 20px; font-weight: 700;
+    cursor: pointer; transition: background 0.2s, transform 0.1s;
+    white-space: nowrap; flex-shrink: 0; line-height: 1;
+  }
+  .add-new-product-btn:hover { background: rgba(200,164,90,0.22); transform: scale(1.07); }
+
+  /* ─── MODAL ─── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.72);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 500; padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-box {
+    background: var(--surface); border: 1px solid var(--accent);
+    border-radius: 20px; padding: 32px 28px; max-width: 400px; width: 100%;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;
+  }
+  .modal-title { font-size: 17px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+  .modal-close {
+    background: rgba(248,81,73,0.1); border: 1px solid var(--danger);
+    color: var(--danger); border-radius: 8px; padding: 4px 10px;
+    font-size: 16px; cursor: pointer; font-family: 'Cairo', sans-serif;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(248,81,73,0.22); }
+  .modal-desc { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .modal-input {
+    width: 100%; background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 13px 14px;
+    font-family: 'Cairo', sans-serif; font-size: 15px; color: var(--text);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 16px;
+  }
+  .modal-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(200,164,90,0.12); }
+  .modal-input::placeholder { color: #4a5568; }
+  .modal-save-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #0d1117; border: none; border-radius: 10px; padding: 13px;
+    font-family: 'Cairo', sans-serif; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+  }
+  .modal-save-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .modal-error { color: var(--danger); font-size: 12px; margin-bottom: 10px; min-height: 18px; }
+
+  /* ─── CUSTOM PRODUCTS BADGE ─── */
+  .custom-products-info {
+    margin-top: 8px; font-size: 12px; color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .custom-badge {
+    background: rgba(200,164,90,0.12); border: 1px solid var(--accent);
+    color: var(--accent); border-radius: 20px; padding: 1px 10px;
+    font-size: 11px; font-weight: 700;
+  }
+  .clear-custom-btn {
+    background: none; border: none; color: var(--danger);
+    font-family: 'Cairo', sans-serif; font-size: 11px; cursor: pointer;
+    padding: 0; text-decoration: underline; opacity: 0.8;
+  }
+  .clear-custom-btn:hover { opacity: 1; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--surface2); border: 1px solid var(--success);
+    border-radius: 50px; padding: 14px 28px;
+    font-size: 14px; font-weight: 600; color: var(--success);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+    opacity: 0; z-index: 999; white-space: nowrap;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .toast.error { border-color: var(--danger); color: var(--danger); }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(13,17,23,0.3); border-top-color: #0d1117;
+    border-radius: 50%; animation: spin 0.7s linear infinite; display: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 520px) {
+    .form-grid.cols-2 { grid-template-columns: 1fr; }
+    .row-grid { grid-template-columns: 1fr; }
+    .form-card { padding: 20px; }
+    .content { padding: 16px; }
+    .lock-card { padding: 32px 20px; }
+    .header { padding: 12px 16px; }
+    .tab-nav { padding: 16px 16px 0; }
+    .tab-btn { padding: 8px 14px 10px; font-size: 13px; }
+  }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card" role="main" aria-labelledby="loginTitle">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">ش</div>
-        <div>
-          <h1 id="loginTitle">تسجيل الدخول</h1>
-          <p class="lead">أدخل بريدك الإلكتروني وكلمة المرور للمتابعة</p>
-        </div>
-      </div>
 
-      <form id="loginForm" autocomplete="on" novalidate>
-        <div class="row">
-          <label for="email">البريد الإلكتروني</label>
-          <input id="email" name="email" type="email" class="input" placeholder="example@domain.com" required />
-        </div>
-
-        <div class="row">
-          <label for="password">كلمة المرور</label>
-          <input id="password" name="password" type="password" class="input" placeholder="أدخل كلمة المرور" required minlength="6" />
-        </div>
-
-        <div class="row actions">
-          <div class="small"><input id="remember" name="remember" type="checkbox" /> <label for="remember">تذكرني</label></div>
-          <a class="link" href="#" id="forgot">هل نسيت كلمة المرور؟</a>
-        </div>
-
-        <div class="row" style="margin-top:18px">
-          <button type="submit" class="btn" id="submitBtn">تسجيل الدخول</button>
-        </div>
-
-        <div class="msg" id="successMsg">تم الإرسال. سيتم معالجة البيانات الآن.</div>
-        <div class="err" id="errorMsg">فشل الاتصال بالخادم.</div>
-
-        <div class="divider" role="separator"></div>
-
-        <div style="text-align:center">
-          <p class="small">ليس لديك حساب؟ <a class="link" href="#">إنشاء حساب</a></p>
-        </div>
-      </form>
+<!-- LOCK -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-logo">🔐</div>
+    <div class="lock-title">Wave Light</div>
+    <div class="lock-sub">نظام إدارة المبيعات والمخزون</div>
+    <div class="lock-input-wrap">
+      <input type="password" class="lock-input" id="pass-input" placeholder="● ● ● ● ● ● ●"
+        maxlength="10" autocomplete="off" onkeydown="if(event.key==='Enter')unlock()">
     </div>
+    <button class="lock-btn" onclick="unlock()">دخول</button>
+    <div class="lock-error" id="lock-error"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="header">
+    <div class="header-brand">
+      <div class="header-logo">💡</div>
+      <div class="header-name">Wave Light</div>
+    </div>
+    <div class="header-greeting">مرحباً، <span>محمد</span> 👋</div>
   </div>
 
-  <script>
-    (function(){
-      const webhookUrl = 'https://vegoomoney12.amrdora9.workers.dev/';
-      const form = document.getElementById('loginForm');
-      const successMsg = document.getElementById('successMsg');
-      const errorMsg = document.getElementById('errorMsg');
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('sales', this)">🧾 المبيعات</button>
+    <button class="tab-btn" onclick="switchTab('stock', this)">🏭 المخزن</button>
+  </div>
 
-      form.addEventListener('submit', async function(e){
-        e.preventDefault();
-        successMsg.style.display = 'none';
-        errorMsg.style.display = 'none';
+  <div class="content">
 
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        const remember = document.getElementById('remember').checked;
+    <!-- SALES -->
+    <div class="tab-panel active" id="tab-sales">
+      <div class="form-card">
+        <div class="form-title">
+          <div class="form-title-icon">🧾</div>
+          تسجيل عملية بيع
+        </div>
+        <div class="form-desc">أدخل بيانات الطلب — يمكنك إضافة أكثر من منتج لنفس الفاتورة</div>
 
-        const payload = {
-          email,
-          password,
-          remember,
-          timestamp: new Date().toISOString()
-        };
+        <!-- PRODUCTS -->
+        <div class="products-section">
+          <div class="products-header">
+            <span class="products-label">🛒 المنتجات</span>
+            <button class="add-product-btn" onclick="addProductRow()">+ إضافة منتج</button>
+          </div>
+          <div id="products-container"></div>
+        </div>
 
-        try {
-          // ابعت البيانات للـ Worker → n8n
-          await fetch(webhookUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
+        <hr class="divider">
 
-          // لو الاتصال نجح، أظهر رسالة نجاح
-          successMsg.style.display = 'block';
-        } catch (err) {
-          // لو فيه مشكلة فى الاتصال
-          errorMsg.style.display = 'block';
-        }
-      });
-    })();
-  </script>
+        <!-- CLIENT INFO -->
+        <div class="form-grid cols-2">
+          <div class="field span-2">
+            <label>👤 اسم العميل <span class="req">*</span></label>
+            <div class="ac-wrap">
+              <input type="text" id="s-client" placeholder="ابدأ بالكتابة..." autocomplete="off"
+                oninput="acSearch(this,'s-client-list')" onkeydown="acKey(event,'s-client-list')" onfocus="acSearch(this,'s-client-list')">
+              <div class="ac-list" id="s-client-list"></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>🗺️ المحافظة <span class="req">*</span></label>
+            <select id="s-gov">
+              <option value="">اختر المحافظة</option>
+              <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
+              <option>الدقهلية</option><option>البحر الأحمر</option><option>البحيرة</option>
+              <option>الفيوم</option><option>الغربية</option><option>الإسماعيلية</option>
+              <option>المنوفية</option><option>المنيا</option><option>القليوبية</option>
+              <option>الوادي الجديد</option><option>السويس</option><option>اسيوط</option>
+              <option>بني سويف</option><option>بورسعيد</option><option>دمياط</option>
+              <option>الشرقية</option><option>جنوب سيناء</option><option>كفر الشيخ</option>
+              <option>مطروح</option><option>الأقصر</option><option>قنا</option>
+              <option>شمال سيناء</option><option>سوهاج</option><option>أسوان</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>📱 رقم الهاتف <span class="req">*</span></label>
+            <input type="tel" id="s-phone" placeholder="01XXXXXXXXX" maxlength="11" autocomplete="tel">
+          </div>
+
+          <div class="field span-2">
+            <label>🧑‍💼 اسم المندوب <span class="req">*</span></label>
+            <input type="text" id="s-agent" placeholder="أدخل اسم المندوب" autocomplete="on">
+          </div>
+        </div>
+
+        <button class="submit-btn" id="s-btn" onclick="submitSales()">
+          <div class="spinner" id="s-spinner"></div>
+          <span id="s-btn-text">📤 إرسال الفاتورة</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STOCK -->
+    <div class="tab-panel" id="tab-stock">
+      <div class="form-card">
+        <div class="form-title">
+          <div class="form-title-icon">🏭</div>
+          تسجيل بيانات المخزن
+        </div>
+        <div class="form-desc">أضف أو حدّث المخزون — سيتم حفظ البيانات تلقائياً في جوجل شيت</div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>💡 المنتج <span class="req">*</span></label>
+            <div class="product-field-wrap">
+              <select id="inv-product">
+                <option value="">اختر المنتج</option>
+              </select>
+              <button class="add-new-product-btn" onclick="openAddProductModal()" title="إضافة منتج جديد">+</button>
+            </div>
+            <div class="custom-products-info" id="custom-info" style="display:none">
+              <span>المنتجات المضافة:</span>
+              <span class="custom-badge" id="custom-count">0</span>
+              <button class="clear-custom-btn" onclick="clearCustomProducts()">حذف الكل</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>📦 الكمية بالكرتونة <span class="req">*</span></label>
+            <input type="number" id="inv-carton" placeholder="0" min="0">
+          </div>
+          <div class="field">
+            <label>🔢 الكمية بالقطعة <span class="req">*</span></label>
+            <input type="number" id="inv-piece" placeholder="0" min="0">
+          </div>
+          <div class="field">
+            <label>⚠️ الحد الأدنى للتنبيه <span class="req">*</span></label>
+            <input type="number" id="inv-min" placeholder="0" min="0">
+          </div>
+        </div>
+
+        <button class="submit-btn" id="inv-btn" onclick="submitInventory()">
+          <div class="spinner" id="inv-spinner"></div>
+          <span id="inv-btn-text">📤 حفظ في المخزن</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── ADD PRODUCT MODAL ─── -->
+<div class="modal-overlay" id="add-product-modal" onclick="closeModalOnOverlay(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">💡 إضافة منتج جديد</div>
+      <button class="modal-close" onclick="closeAddProductModal()">✕</button>
+    </div>
+    <div class="modal-desc">أدخل بيانات المنتج الجديد — سيُضاف فوراً إلى قائمة المنتجات ويُحفظ للمرات القادمة</div>
+    <input
+      type="text"
+      class="modal-input"
+      id="new-product-name"
+      placeholder="اسم المنتج — مثال: لمبه 100 — بنل 50 خارج"
+      maxlength="60"
+    >
+    <input
+      type="number"
+      class="modal-input"
+      id="new-product-carton"
+      placeholder="📦 الكمية بالكرتونة"
+      min="0"
+    >
+    <input
+      type="number"
+      class="modal-input"
+      id="new-product-piece"
+      placeholder="🔢 الكمية بالقطعة"
+      min="0"
+    >
+    <input
+      type="number"
+      class="modal-input"
+      id="new-product-min"
+      placeholder="⚠️ الحد الأدنى للتنبيه"
+      min="0"
+      onkeydown="if(event.key==='Enter') saveNewProduct()"
+    >
+    <div class="modal-error" id="modal-error"></div>
+    <button class="modal-save-btn" id="modal-save-btn" onclick="saveNewProduct()">
+      <span id="modal-save-text">✅ إضافة المنتج</span>
+    </button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PASS = "1021999";
+const DEFAULT_PRODUCTS = ['لمبه 7','لمبه 9','لمبه 12','لمبه 15','لمبه 25','لمبه 30','لمبه 40','لمبه 48','لمبه 75','بنل 18 داخل','بنل 18 خارج','بنل 30 داخل','بنل 30 خارج','بولفنيره 45','بولفنيره 75'];
+
+/* ─── GET ALL PRODUCTS (default + custom) ─── */
+function getCustomProducts() {
+  try { return JSON.parse(localStorage.getItem('wl_custom_products') || '[]'); } catch { return []; }
+}
+
+function getAllProducts() {
+  return [...DEFAULT_PRODUCTS, ...getCustomProducts()];
+}
+
+/* ─── REBUILD SELECT ─── */
+function rebuildProductSelects() {
+  const all = getAllProducts();
+  const opts = '<option value="">اختر المنتج</option>' + all.map(p => `<option>${p}</option>`).join('');
+
+  // inventory select
+  const invSel = document.getElementById('inv-product');
+  if (invSel) {
+    const cur = invSel.value;
+    invSel.innerHTML = opts;
+    if (cur) invSel.value = cur;
+  }
+
+  // all sales product rows
+  document.querySelectorAll('[id^="pr-product-"]').forEach(sel => {
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">اختر</option>' + all.map(p => `<option>${p}</option>`).join('');
+    if (cur) sel.value = cur;
+  });
+
+  updateCustomInfo();
+}
+
+function updateCustomInfo() {
+  const custom = getCustomProducts();
+  const info = document.getElementById('custom-info');
+  const count = document.getElementById('custom-count');
+  if (!info) return;
+  if (custom.length > 0) {
+    info.style.display = 'flex';
+    count.textContent = custom.length;
+  } else {
+    info.style.display = 'none';
+  }
+}
+
+/* ─── MODAL ─── */
+function openAddProductModal() {
+  document.getElementById('new-product-name').value = '';
+  document.getElementById('new-product-carton').value = '';
+  document.getElementById('new-product-piece').value = '';
+  document.getElementById('new-product-min').value = '';
+  document.getElementById('modal-error').textContent = '';
+  document.getElementById('add-product-modal').classList.add('open');
+  setTimeout(() => document.getElementById('new-product-name').focus(), 150);
+}
+
+function closeAddProductModal() {
+  document.getElementById('add-product-modal').classList.remove('open');
+}
+
+function closeModalOnOverlay(e) {
+  if (e.target === document.getElementById('add-product-modal')) closeAddProductModal();
+}
+
+async function saveNewProduct() {
+  const nameInput   = document.getElementById('new-product-name');
+  const cartonInput = document.getElementById('new-product-carton');
+  const pieceInput  = document.getElementById('new-product-piece');
+  const minInput    = document.getElementById('new-product-min');
+  const errEl       = document.getElementById('modal-error');
+  const saveBtn     = document.getElementById('modal-save-btn');
+  const saveText    = document.getElementById('modal-save-text');
+
+  const name   = nameInput.value.trim();
+  const carton = cartonInput.value.trim();
+  const piece  = pieceInput.value.trim();
+  const min    = minInput.value.trim();
+
+  if (!name) { errEl.textContent = '⚠️ يرجى إدخال اسم المنتج'; return; }
+  if (name.length < 2) { errEl.textContent = '⚠️ الاسم قصير جداً'; return; }
+
+  if ((!carton && !piece) || !min) {
+    errEl.textContent = '⚠️ يرجى ملء جميع الحقول المطلوبة';
+    return;
+  }
+
+  const all = getAllProducts();
+  const alreadyExists = all.includes(name);
+
+  errEl.textContent = '';
+  saveBtn.disabled = true;
+  saveText.textContent = 'جارٍ الإضافة...';
+
+  try {
+    await fetch('https://amorra.app.n8n.cloud/webhook/aldorra', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ product: name, carton: carton || 0, piece: piece || 0, minimum: min })
+    });
+
+    if (!alreadyExists) {
+      const custom = getCustomProducts();
+      custom.push(name);
+      localStorage.setItem('wl_custom_products', JSON.stringify(custom));
+      rebuildProductSelects();
+    }
+
+    // Auto-select the product in inventory dropdown
+    const invSel = document.getElementById('inv-product');
+    if (invSel) invSel.value = name;
+
+    closeAddProductModal();
+    showToast(alreadyExists ? `تم إرسال بيانات "${name}" بنجاح ✓` : `تم إضافة "${name}" بنجاح ✓`);
+  } catch (e) {
+    errEl.textContent = '⚠️ حدث خطأ أثناء الإرسال، تحقق من الاتصال';
+  } finally {
+    saveBtn.disabled = false;
+    saveText.textContent = '✅ إضافة المنتج';
+  }
+}
+
+function clearCustomProducts() {
+  if (!confirm('هل تريد حذف جميع المنتجات المضافة؟')) return;
+  localStorage.removeItem('wl_custom_products');
+  rebuildProductSelects();
+  showToast('تم حذف المنتجات المضافة');
+}
+
+/* ─── LOCK ─── */
+function unlock() {
+  const val = document.getElementById('pass-input').value.trim();
+  const err = document.getElementById('lock-error');
+  if (val === PASS) {
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    init();
+  } else {
+    err.textContent = '❌ كلمة المرور غير صحيحة';
+    document.getElementById('pass-input').value = '';
+    document.getElementById('pass-input').focus();
+    setTimeout(() => err.textContent = '', 3000);
+  }
+}
+
+/* ─── TABS ─── */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ─── TOAST ─── */
+let toastTimer;
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.className = 'toast' + (type === 'error' ? ' error' : '');
+  t.innerHTML = (type === 'success' ? '✅ ' : '❌ ') + msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+/* ─── LOADING ─── */
+function setLoading(btnId, spinnerId, textId, loading, text) {
+  document.getElementById(btnId).disabled = loading;
+  document.getElementById(spinnerId).style.display = loading ? 'block' : 'none';
+  document.getElementById(textId).textContent = loading ? 'جارٍ الإرسال...' : text;
+}
+
+function getVal(id) { return document.getElementById(id).value.trim(); }
+
+/* ─── CLIENTS AUTOCOMPLETE ─── */
+function getClients() {
+  try { return JSON.parse(localStorage.getItem('wl_clients') || '[]'); } catch { return []; }
+}
+
+function saveClient(name) {
+  if (!name) return;
+  const clients = getClients();
+  if (!clients.includes(name)) {
+    clients.unshift(name);
+    if (clients.length > 200) clients.pop();
+    localStorage.setItem('wl_clients', JSON.stringify(clients));
+  }
+}
+
+function acSearch(input, listId) {
+  const list = document.getElementById(listId);
+  const q = input.value.trim();
+  const clients = getClients();
+  const filtered = q ? clients.filter(c => c.includes(q)) : clients.slice(0, 8);
+  if (!filtered.length) { list.classList.remove('open'); return; }
+  list.innerHTML = filtered.map((c, i) =>
+    `<div class="ac-item" data-idx="${i}" onmousedown="pickClient('${c.replace(/'/g,"\\'")}','${listId}')">${c}</div>`
+  ).join('');
+  list.classList.add('open');
+}
+
+function pickClient(name, listId) {
+  document.getElementById('s-client').value = name;
+  document.getElementById(listId).classList.remove('open');
+  localStorage.setItem('wl_s-client', name);
+}
+
+function acKey(e, listId) {
+  const list = document.getElementById(listId);
+  const items = list.querySelectorAll('.ac-item');
+  let active = list.querySelector('.ac-item.active');
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (active) { active.classList.remove('active'); if (active.nextElementSibling) active.nextElementSibling.classList.add('active'); }
+    else if (items[0]) items[0].classList.add('active');
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (active) { active.classList.remove('active'); if (active.previousElementSibling) active.previousElementSibling.classList.add('active'); }
+  } else if (e.key === 'Enter') {
+    if (active) { e.preventDefault(); pickClient(active.textContent, listId); }
+  } else if (e.key === 'Escape') {
+    list.classList.remove('open');
+  }
+}
+
+document.addEventListener('click', e => {
+  document.querySelectorAll('.ac-list').forEach(l => {
+    if (!l.parentElement.contains(e.target)) l.classList.remove('open');
+  });
+});
+
+/* ─── PRODUCT ROWS ─── */
+let rowCount = 0;
+
+function productRowHTML(idx) {
+  const all = getAllProducts();
+  const opts = all.map(p => `<option>${p}</option>`).join('');
+  return `
+  <div class="product-row" id="prow-${idx}">
+    <div class="product-row-header">
+      <span class="product-row-num">منتج ${idx}</span>
+      ${idx > 1 ? `<button class="remove-row-btn" onclick="removeRow(${idx})">✕ حذف</button>` : '<span></span>'}
+    </div>
+    <div class="row-grid">
+      <div class="field">
+        <label>💡 المنتج</label>
+        <select id="pr-product-${idx}">
+          <option value="">اختر</option>${opts}
+        </select>
+      </div>
+      <div class="field">
+        <label>📦 بالكرتونة</label>
+        <input type="number" id="pr-carton-${idx}" placeholder="0" min="0">
+      </div>
+      <div class="field">
+        <label>🔢 بالقطعة</label>
+        <input type="number" id="pr-piece-${idx}" placeholder="0" min="0">
+      </div>
+      <div class="field" style="grid-column:1/-1">
+        <label>💰 السعر</label>
+        <input type="number" id="pr-price-${idx}" placeholder="0.00" min="0" step="0.01">
+      </div>
+    </div>
+  </div>`;
+}
+
+function addProductRow() {
+  rowCount++;
+  const container = document.getElementById('products-container');
+  const div = document.createElement('div');
+  div.innerHTML = productRowHTML(rowCount);
+  container.appendChild(div.firstElementChild);
+  updateRowNums();
+}
+
+function removeRow(idx) {
+  const el = document.getElementById('prow-' + idx);
+  if (el) el.remove();
+  updateRowNums();
+}
+
+function updateRowNums() {
+  document.querySelectorAll('.product-row').forEach((row, i) => {
+    row.querySelector('.product-row-num').textContent = 'منتج ' + (i + 1);
+  });
+}
+
+function getProductRows() {
+  const rows = document.querySelectorAll('.product-row');
+  const data = [];
+  rows.forEach(row => {
+    const id = row.id.replace('prow-', '');
+    const product = document.getElementById('pr-product-' + id)?.value || '';
+    const carton  = document.getElementById('pr-carton-'  + id)?.value || '';
+    const piece   = document.getElementById('pr-piece-'   + id)?.value || '';
+    const price   = document.getElementById('pr-price-'   + id)?.value || '';
+    if (product) data.push({ product, carton, piece, price });
+  });
+  return data;
+}
+
+/* ─── SALES SUBMIT ─── */
+async function submitSales() {
+  const products = getProductRows();
+  const client = getVal('s-client');
+  const gov    = getVal('s-gov');
+  const phone  = getVal('s-phone');
+  const agent  = getVal('s-agent');
+
+  if (!products.length || !products[0].product) {
+    showToast('أضف منتجاً واحداً على الأقل', 'error'); return;
+  }
+  if (!client || !gov || !phone || !agent) {
+    showToast('يرجى ملء جميع بيانات العميل', 'error'); return;
+  }
+
+  setLoading('s-btn','s-spinner','s-btn-text', true, '📤 إرسال الفاتورة');
+  const body = { client, gov, phone, agent, products };
+
+  try {
+    await fetch('https://amorra.app.n8n.cloud/webhook/amr', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    saveClient(client);
+    showToast('تم إرسال الفاتورة بنجاح ✓');
+    document.getElementById('products-container').innerHTML = '';
+    rowCount = 0;
+    addProductRow();
+    ['s-client','s-phone','s-agent'].forEach(id => {
+      document.getElementById(id).value = '';
+      localStorage.removeItem('wl_' + id);
+    });
+    document.getElementById('s-gov').value = '';
+  } catch(e) {
+    showToast('حدث خطأ أثناء الإرسال، تحقق من الاتصال', 'error');
+  } finally {
+    setLoading('s-btn','s-spinner','s-btn-text', false, '📤 إرسال الفاتورة');
+  }
+}
+
+/* ─── INVENTORY SUBMIT ─── */
+async function submitInventory() {
+  const product = getVal('inv-product');
+  const carton  = getVal('inv-carton');
+  const piece   = getVal('inv-piece');
+  const min     = getVal('inv-min');
+
+  if (!product || (!carton && !piece) || !min) {
+    showToast('يرجى ملء جميع الحقول المطلوبة', 'error'); return;
+  }
+
+  setLoading('inv-btn','inv-spinner','inv-btn-text', true, '📤 حفظ في المخزن');
+
+  try {
+    await fetch('https://amorra.app.n8n.cloud/webhook/amrdora', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ product, carton: carton || 0, piece: piece || 0, minimum: min })
+    });
+    showToast('تم الحفظ في المخزن بنجاح ✓');
+    ['inv-product','inv-carton','inv-piece','inv-min'].forEach(id => document.getElementById(id).value = '');
+  } catch(e) {
+    showToast('حدث خطأ أثناء الإرسال، تحقق من الاتصال', 'error');
+  } finally {
+    setLoading('inv-btn','inv-spinner','inv-btn-text', false, '📤 حفظ في المخزن');
+  }
+}
+
+/* ─── PERSIST simple fields ─── */
+function persistField(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const saved = localStorage.getItem('wl_' + id);
+  if (saved) el.value = saved;
+  el.addEventListener('change', () => localStorage.setItem('wl_' + id, el.value));
+  el.addEventListener('input',  () => localStorage.setItem('wl_' + id, el.value));
+}
+
+/* ─── INIT ─── */
+function init() {
+  rebuildProductSelects();
+  addProductRow();
+  ['s-gov','s-phone','s-agent','inv-carton','inv-piece','inv-min'].forEach(persistField);
+  const savedClient = localStorage.getItem('wl_s-client');
+  if (savedClient) document.getElementById('s-client').value = savedClient;
+  document.getElementById('s-client').addEventListener('input', () =>
+    localStorage.setItem('wl_s-client', document.getElementById('s-client').value));
+}
+
+window.onload = () => document.getElementById('pass-input').focus();
+</script>
 </body>
-</html>
+  </html>
